@@ -61,10 +61,10 @@ class LEDStrip : public Object{
 		void cycleSpeed();
 		
 		void handleFlash();
-		void handleStrobe();
+		int handleStrobe();
 		void handleStrobe2();
 		void handleFade();
-		void handleSmooth();
+		float handleSmooth();
 		void handleSmooth2();
 		void handleReact();
 		void handleTouch();

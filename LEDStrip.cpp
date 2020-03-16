@@ -36,7 +36,7 @@ LEDStrip::LEDStrip(const char *pTag) :
 void LEDStrip::update() {
 
 	potValue = analogRead(POT_SENSOR);
-	Serial.println(potValue);
+	//Serial.println(potValue);
 
 	switch(mode) {
 		case NORMAL_MODE:
@@ -244,22 +244,22 @@ void LEDStrip::handleFlash() {
 // handles the strobe mode operation
 //
 
-void LEDStrip::handleStrobe() {
+int LEDStrip::handleStrobe() {
 
 	if(stopwatch.checkDone()) {
 
-		if(strobeState % 2) {
+		if(strobeState) {
 			writeColor(0, 0, 0);
 			stopwatch.start(potValue);
 
 		} else {
 			writeColor();
-			stopwatch.start(20);
+			stopwatch.start(potValue / 10);
 		}
 
-		strobeState++;
+		return strobeState = ++strobeState % 2;
 		
-	}
+	} else return 1;
 
 }// end LEDStrip::handleStrobe
 //-----------------------------------------------------------------------------------------
@@ -272,20 +272,7 @@ void LEDStrip::handleStrobe() {
 
 void LEDStrip::handleStrobe2() {
 
-	if(stopwatch.checkDone()) {
-
-		if(strobeState % 2) {
-			writeColor(0, 0, 0);
-			stopwatch.start(potValue);
-
-		} else {
-			writeRandomColor();
-			stopwatch.start(20);
-		}
-
-		strobeState++;
-
-	}
+	if(handleStrobe() == 0) setRandomColor();
 
 }// end LEDStrip::handleStrobe2
 //-----------------------------------------------------------------------------------------
@@ -324,12 +311,16 @@ void LEDStrip::handleFade() {
 // LEDStrip::handleSmooth
 //
 // handles the Smooth mode operation
+// returns the sin value so that it can be monitored by handleSmooth2()
 //
 
-void LEDStrip::handleSmooth() {
+float LEDStrip::handleSmooth() {
 
-	float x = millis() % 20000;
-	float a = PI/((float)potValue);
+	if(!stopwatch.checkDone()) return 1;
+	stopwatch.start(potValue/15);
+
+	float x = smoothCounter = ++smoothCounter % 101;
+	float a = PI/50.0;
 	float y = 0.5 * ( sin(x*a) + 1 );
 
 	int r = red * y;
@@ -337,6 +328,8 @@ void LEDStrip::handleSmooth() {
 	int b = blue * y;
 
 	writeColor(r, g, b);
+
+	return y;
 
 }// end LEDStrip::handleSmooth
 //-----------------------------------------------------------------------------------------
@@ -344,22 +337,14 @@ void LEDStrip::handleSmooth() {
 //-----------------------------------------------------------------------------------------
 // LEDStrip::handleSmooth2
 //
-// handles the Smooth mode operation
+// handles the Smooth2 mode operation
+// performs the same as handleSmooth() except when the sin return value from handleSmooth()
+// reaches zero, the color is changed (each pulse is a random color)
 //
 
 void LEDStrip::handleSmooth2() {
 
-	float x = millis() % 20000;
-	float a = PI/((float)potValue);
-	float y = 0.5 * ( sin(x*a) + 1 );
-
-	int r = red * y;
-	int g = green * y;
-	int b = blue * y;
-
-	writeColor(r, g, b);
-
-	if(y < 0.0001) setRandomColor();
+	if(handleSmooth() < 0.0001) setRandomColor();
 
 }// end LEDStrip::handleSmooth2
 //-----------------------------------------------------------------------------------------
