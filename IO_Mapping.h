@@ -29,7 +29,6 @@ enum Outputs {
 const unsigned long IR_ON           = 0xFFA25D;
 const unsigned long IR_OFF          = 0xFFE21D;
 const unsigned long IR_BRIGHTNESS   = 0xFFE01F;
-const unsigned long IR_SPEED		= 0xFF906F;
 const unsigned long IR_CYCLE_RED    = 0xFF22DD;
 const unsigned long IR_CYCLE_GREEN  = 0xFF02FD;
 const unsigned long IR_CYCLE_BLUE   = 0xFFC23D;
@@ -51,7 +50,7 @@ const unsigned long IR_TOUCH2		= 0xFF52AD;
  *  ╠════╬════╬════╣
  *     RED      GRN     BLU
  *  ╠════╬════╬════╣
- *    BRIGHT           SPEED
+ *    BRIGHT           
  *  ╠════╬════╬════╣
  *
  *  ╠════╬════╬════╣

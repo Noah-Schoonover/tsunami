@@ -126,10 +126,6 @@ void Controller::handleIR() {
 		ledStrip.cycleBrightness();
 		break;
 
-	case IR_SPEED:
-		//cycleSpeed();
-		break;
-
 	case IR_FLASH:
 		ledStrip.setMode(FLASH_MODE);
 		break;

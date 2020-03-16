@@ -59,7 +59,6 @@ class LEDStrip : public Object{
 		unsigned char cycleColor(Colors pColor);
 		void setBrightness(float pBrightness);
 		void cycleBrightness();
-		void cycleSpeed();
 		
 		void handleFlash();
 		int handleStrobe();
