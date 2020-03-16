@@ -254,7 +254,7 @@ int LEDStrip::handleStrobe() {
 
 		} else {
 			writeColor();
-			stopwatch.start(potValue / 10);
+			stopwatch.start(20);
 		}
 
 		return strobeState = ++strobeState % 2;
