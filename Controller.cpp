@@ -93,6 +93,7 @@ void Controller::handleIR() {
 
 	case IR_ON:
 		ledStrip.writeColor();
+		ledStrip.setBrightness(1.0);
 		ledStrip.setMode(NORMAL_MODE);
 		break;
 
@@ -122,7 +123,7 @@ void Controller::handleIR() {
 		break;
 
 	case IR_BRIGHTNESS:
-		//cycleBrightness();
+		ledStrip.cycleBrightness();
 		break;
 
 	case IR_SPEED:

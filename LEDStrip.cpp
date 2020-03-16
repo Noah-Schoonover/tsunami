@@ -77,14 +77,13 @@ void LEDStrip::update() {
 // LEDStrip::writeColor
 //
 // sets the PWM outputs to the specified values
-// brightness values are inverted (subtracted from 255) for proper PWM control
 //
 
 void LEDStrip::writeColor(int pRed, int pGreen, int pBlue) {
 
-	analogWrite(RED_LED, pRed);
-	analogWrite(GREEN_LED, pGreen);
-	analogWrite(BLUE_LED, pBlue);
+	analogWrite(RED_LED, (float)pRed * brightness);
+	analogWrite(GREEN_LED, (float)pGreen * brightness);
+	analogWrite(BLUE_LED, (float)pBlue * brightness);
 
 }// end LEDStrip::writeColor
 //-----------------------------------------------------------------------------------------
@@ -92,15 +91,12 @@ void LEDStrip::writeColor(int pRed, int pGreen, int pBlue) {
 //-----------------------------------------------------------------------------------------
 // LEDStrip::writeColor
 //
-// sets the PWM outputs to the specified values
-// brightness values are inverted (subtracted from 255) for proper PWM control
+// sets the PWM outputs to the stored red, green, and blue values
 //
 
 void LEDStrip::writeColor() {
 
-	analogWrite(RED_LED, red);
-	analogWrite(GREEN_LED, green);
-	analogWrite(BLUE_LED, blue);
+	writeColor(red, green, blue);
 
 }// end LEDStrip::writeColor
 //-----------------------------------------------------------------------------------------
@@ -208,7 +204,29 @@ unsigned char LEDStrip::cycleColor(Colors pColor) {
 
 void LEDStrip::cycleBrightness() {
 
+	float newBrightness = brightness + 0.2;
+	if(newBrightness > 1.0) newBrightness = 0.2;
+
+	setBrightness(newBrightness);
+
 }// end LEDStrip::cycleBrightness
+//-----------------------------------------------------------------------------------------
+
+//-----------------------------------------------------------------------------------------
+// LEDStrip::setBrightness
+//
+// sets the brightness factor
+//
+
+void LEDStrip::setBrightness(float pBrightness) {
+
+	if(pBrightness >= 1.0) brightness = 1.0;
+	else if(pBrightness <= 0.1) brightness = 0.1;
+	else brightness = pBrightness;
+
+	if(mode == NORMAL_MODE) writeColor();
+
+}// end LEDStrip::setBrightness
 //-----------------------------------------------------------------------------------------
 
 //-----------------------------------------------------------------------------------------

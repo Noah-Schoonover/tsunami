@@ -57,6 +57,7 @@ class LEDStrip : public Object{
 		void setAndWriteColor(int pRed, int pGreen, int pBlue);
 
 		unsigned char cycleColor(Colors pColor);
+		void setBrightness(float pBrightness);
 		void cycleBrightness();
 		void cycleSpeed();
 		
@@ -82,11 +83,8 @@ class LEDStrip : public Object{
 		unsigned char green = 255;
 		unsigned char blue = 255;
 
-		
-
 		const unsigned char INCREASE_VALUE = 51;
-
-		int strobeState = 0;
+		float brightness = 1.0;
 
 		int potValue = 0;
 		int threshold = 0;
@@ -108,6 +106,7 @@ class LEDStrip : public Object{
 
 		int fadeCounter = 0;
 		int smoothCounter = 0;
+		int strobeState = 0;
 
 };// end of class LEDStrip
 //-----------------------------------------------------------------------------------------
