@@ -95,11 +95,17 @@ void Controller::handleIR() {
 		ledStrip.writeColor();
 		ledStrip.setBrightness(1.0);
 		ledStrip.setMode(NORMAL_MODE);
+
+		digitalWrite(LED_BUILTIN, HIGH);
+
 		break;
 
 	case IR_OFF:
 		ledStrip.writeColor(0, 0, 0);
 		ledStrip.setMode(NORMAL_MODE);
+
+		digitalWrite(LED_BUILTIN, LOW);
+
 		break;
 
 	case IR_WHITE:
@@ -180,6 +186,8 @@ void Controller::handleIR() {
 //
 
 void Controller::setupIO() {
+
+	pinMode(LED_BUILTIN, OUTPUT);
   
 	pinMode(RED_LED, OUTPUT);
 	pinMode(GREEN_LED, OUTPUT);

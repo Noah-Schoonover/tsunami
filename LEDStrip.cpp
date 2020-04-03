@@ -35,8 +35,8 @@ LEDStrip::LEDStrip(const char *pTag) :
 
 void LEDStrip::update() {
 
-	potValue = analogRead(POT_SENSOR);
-	//Serial.println(potValue);
+	encoderValue = analogRead(POT_SENSOR);
+	//Serial.println(encoderValue);
 
 	switch(mode) {
 		case NORMAL_MODE:
@@ -239,7 +239,7 @@ void LEDStrip::handleFlash() {
 
 	if(stopwatch.checkDone()) {
 		writeRandomColor();
-		stopwatch.start(potValue);
+		stopwatch.start(encoderValue);
 	}
 
 }// end LEDStrip::handleFlash
@@ -257,7 +257,7 @@ int LEDStrip::handleStrobe() {
 
 		if(strobeState) {
 			writeColor(0, 0, 0);
-			stopwatch.start(potValue);
+			stopwatch.start(encoderValue);
 
 		} else {
 			writeColor();
@@ -294,7 +294,7 @@ void LEDStrip::handleFade() {
 	
 	if(!stopwatch.checkDone()) return;
 
-	stopwatch.start(potValue / 100);
+	stopwatch.start(encoderValue / 100);
 
 	targetColor = targetColors[fadeCounter % 6];
 
@@ -324,7 +324,7 @@ void LEDStrip::handleFade() {
 float LEDStrip::handleSmooth() {
 
 	if(!stopwatch.checkDone()) return 1;
-	stopwatch.start(potValue/15);
+	stopwatch.start(encoderValue/15);
 
 	float x = smoothCounter = ++smoothCounter % 101;
 	float a = PI/50.0;
@@ -368,7 +368,7 @@ void LEDStrip::handleReact() {
 	int scaledSound = ((float)soundValue / 1024.0) * 255.0;
 	//if(soundValue > 100) Serial.println(soundValue);
 	
-	int temp = ((float) potValue / 1024.0) * 150;
+	int temp = ((float) encoderValue / 1024.0) * 150;
 	if(threshold != temp) {
 		threshold = temp;
 		Serial.println(threshold);
@@ -391,7 +391,7 @@ void LEDStrip::handleReact() {
 
 void LEDStrip::handleTouch() {
 
-	touchSensor.update(potValue);
+	touchSensor.update(encoderValue);
 
 	if(touchSensor.state == ON) {
 		writeColor();
@@ -411,7 +411,7 @@ void LEDStrip::handleTouch() {
 
 void LEDStrip::handleTouch2() {
 
-	touchSensor.update(potValue);
+	touchSensor.update(encoderValue);
 
 	if(touchSensor.state == ON && stopwatch.checkDone()) {
 		writeRandomColor();

@@ -7,11 +7,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/noah/Documents/Arduino/test/rgbRemote/LEDStrip.cpp</file>
-            <file>file:/C:/Users/noah/Documents/Arduino/test/rgbRemote/Controller.cpp</file>
-            <file>file:/C:/Users/noah/Documents/Arduino/test/rgbRemote/IO_Mapping.h</file>
-            <file>file:/C:/Users/noah/Documents/Arduino/test/rgbRemote/Stopwatch.h</file>
-            <file>file:/C:/Users/noah/Documents/Arduino/test/rgbRemote/LEDStrip.h</file>
+            <file>file:/C:/Users/noah/Documents/Arduino/rgbRemote/IO_Mapping.h</file>
+            <file>file:/C:/Users/noah/Documents/Arduino/rgbRemote/LEDStrip.cpp</file>
+            <file>file:/C:/Users/noah/Documents/Arduino/rgbRemote/LEDStrip.h</file>
+            <file>file:/C:/Users/noah/Documents/Arduino/rgbRemote/Controller.cpp</file>
         </group>
     </open-files>
 </project-private>

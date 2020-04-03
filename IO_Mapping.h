@@ -11,14 +11,14 @@ enum Inputs{
 	RECEIVE_PIN = 2,
 	SOUND_SENSOR = A0,
 	POT_SENSOR = A1,
-	TOUCH_RECEIVE = 5
+	TOUCH_RECEIVE = 3
 
 };
 
 enum Outputs {
 
 	RED_LED = 6,
-	GREEN_LED = 10,
+	GREEN_LED = 5,
 	BLUE_LED = 9,
 
 	TOUCH_TRANSMIT = 4,
