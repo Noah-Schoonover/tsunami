@@ -5,8 +5,11 @@
 #include "Object.h"
 #include "IO_Mapping.h"
 #include "Stopwatch.h"
-#include <TouchSensor.h>
+#include "TouchSensor.h"
+
+#define ENCODER_DO_NOT_USE_INTERRUPTS
 #include <Encoder.h>
+
 #include <Arduino.h>
 
 enum Colors {
@@ -86,11 +89,12 @@ class LEDStrip : public Object{
 		const unsigned char INCREASE_VALUE = 51;
 		float brightness = 1.0;
 
-		int encoderValue = 0;
-		int threshold = 0;
+		int encoderPosition = 0;
+		int adjustedValue = 0;
 
 		Stopwatch stopwatch;
 
+		Encoder encoder;
 		TouchSensor touchSensor;
 
 		unsigned char *colors[3] = {&red, &green, &blue};

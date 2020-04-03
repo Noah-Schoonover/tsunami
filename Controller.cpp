@@ -55,6 +55,11 @@ void Controller::process(){
 
 	if( retreiveIR() ) handleIR();
 
+	if(digitalRead(ENCODER_SW))
+		digitalWrite(LED_BUILTIN, HIGH);
+	else
+		digitalWrite(LED_BUILTIN, LOW);
+
 	ledStrip.update();
 
 	//analogSensorValue = analogRead(ANALOG_SENSOR);
@@ -95,17 +100,11 @@ void Controller::handleIR() {
 		ledStrip.writeColor();
 		ledStrip.setBrightness(1.0);
 		ledStrip.setMode(NORMAL_MODE);
-
-		digitalWrite(LED_BUILTIN, HIGH);
-
 		break;
 
 	case IR_OFF:
 		ledStrip.writeColor(0, 0, 0);
 		ledStrip.setMode(NORMAL_MODE);
-
-		digitalWrite(LED_BUILTIN, LOW);
-
 		break;
 
 	case IR_WHITE:
@@ -192,6 +191,10 @@ void Controller::setupIO() {
 	pinMode(RED_LED, OUTPUT);
 	pinMode(GREEN_LED, OUTPUT);
 	pinMode(BLUE_LED, OUTPUT);
+
+	pinMode(ENCODER_SW, INPUT);
+	pinMode(ENCODER_DT, INPUT);
+	pinMode(ENCODER_CLK, INPUT);
 
 	pinMode(SOUND_SENSOR, INPUT);
 	pinMode(POT_SENSOR, INPUT);
