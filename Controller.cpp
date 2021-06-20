@@ -18,8 +18,8 @@
 //
 
 Controller::Controller() :
-	ledStrip("LED Strip"),
-	irrecv(RECEIVE_PIN)
+	irrecv(RECEIVE_PIN),
+	ledStrip("LED Strip")
 {
 
 }// end of Controller::Controller (constructor)

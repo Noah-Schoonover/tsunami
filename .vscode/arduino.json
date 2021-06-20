@@ -1,0 +1,12 @@
+{
+    "configuration": "cpu=16MHzatmega328",
+    "board": "arduino:avr:pro",
+    "sketch": "rgbRemote.ino",
+    "output": "../build",
+    "buildPreferences": [
+        [
+            "compiler.cpp.extra_flags",
+            "-Wno-unused-function -Wno-unused-parameter"
+        ]
+    ]
+}

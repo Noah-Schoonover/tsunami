@@ -17,9 +17,9 @@
 
 LEDStrip::LEDStrip(const char *pTag) :
 		Object("LEDStrip", pTag),
-		touchSensor("touchSensor", TOUCH_TRANSMIT, TOUCH_RECEIVE),
 		stopwatch("Stopwatch"),
-		encoder(ENCODER_DT, ENCODER_CLK)
+		encoder(ENCODER_DT, ENCODER_CLK),
+		touchSensor("touchSensor", TOUCH_TRANSMIT, TOUCH_RECEIVE)
 {
 
 	
@@ -269,7 +269,7 @@ int LEDStrip::handleStrobe() {
 			stopwatch.start(20);
 		}
 
-		return strobeState = ++strobeState % 2;
+		return strobeState = (strobeState + 1) % 2;
 		
 	} else return 1;
 
@@ -331,7 +331,7 @@ float LEDStrip::handleSmooth() {
 	if(!stopwatch.checkDone()) return 1;
 	stopwatch.start(encoderPosition);
 
-	float x = smoothCounter = ++smoothCounter % 101;
+	float x = smoothCounter = (smoothCounter + 1) % 101;
 	float a = PI/50.0;
 	float y = 0.5 * ( sin(x*a) + 1 );
 
