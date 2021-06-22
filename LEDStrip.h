@@ -6,6 +6,7 @@
 #include "IO_Mapping.h"
 #include "Stopwatch.h"
 #include "TouchSensor.h"
+#include "Accelerometer.h"
 
 #define ENCODER_DO_NOT_USE_INTERRUPTS
 #include <Encoder.h>
@@ -28,7 +29,8 @@ enum Modes {
 	SMOOTH2_MODE,
 	REACT_MODE,
 	TOUCH_MODE,
-	TOUCH2_MODE
+	TOUCH2_MODE,
+	ACCEL_MODE
 };
 
 enum ModeSpeeds {
@@ -73,6 +75,7 @@ class LEDStrip : public Object{
 		void handleReact();
 		void handleTouch();
 		void handleTouch2();
+		void handleAccel();
 
 		virtual ~LEDStrip();
 
@@ -96,6 +99,7 @@ class LEDStrip : public Object{
 
 		Encoder encoder;
 		TouchSensor touchSensor;
+		Accelerometer accelerometer;
 
 		unsigned char *colors[3] = {&red, &green, &blue};
 		unsigned char *targetColor;

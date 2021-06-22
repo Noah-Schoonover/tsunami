@@ -9,7 +9,7 @@
 
 #include "Controller.h"
 
-Controller controller;
+Controller *controller;
 
 //-----------------------------------------------------------------------------------------
 // setup
@@ -19,7 +19,10 @@ Controller controller;
 
 void setup() {
 
-  controller.init();
+  Serial.begin(9600);
+  Serial.println("---\nSerial Initialized");
+  controller = new Controller();
+  controller->init();
 
 }// end of setup
 //-----------------------------------------------------------------------------------------
@@ -33,7 +36,7 @@ void setup() {
 
 void loop(void) {
 
-  controller.process();
+  controller->process();
 
 }// end of loop
 //-----------------------------------------------------------------------------------------

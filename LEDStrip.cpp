@@ -19,7 +19,8 @@ LEDStrip::LEDStrip(const char *pTag) :
 		Object("LEDStrip", pTag),
 		stopwatch("Stopwatch"),
 		encoder(ENCODER_DT, ENCODER_CLK),
-		touchSensor("touchSensor", TOUCH_TRANSMIT, TOUCH_RECEIVE)
+		touchSensor("touch sensor", TOUCH_TRANSMIT, TOUCH_RECEIVE),
+		accelerometer("accelerometer")
 {
 
 	
@@ -38,10 +39,9 @@ void LEDStrip::update() {
 
 	encoderPosition = encoder.read() / 4;
 	if(encoderPosition < 0) {encoder.write(0); encoderPosition = 0;}
-	if(encoderPosition > 40) {encoder.write(40); encoderPosition = 40;}
+	if(encoderPosition > 40) {encoder.write(160); encoderPosition = 40;}
 	adjustedValue = encoderPosition*encoderPosition;
-
-	//Serial.println(encoderPosition);
+	Serial.print("encoder pos: "); Serial.println(encoderPosition);
 
 	switch(mode) {
 		case NORMAL_MODE:
@@ -72,6 +72,9 @@ void LEDStrip::update() {
 			break;
 		case TOUCH2_MODE:
 			handleTouch2();
+			break;
+		case ACCEL_MODE:
+			handleAccel();
 			break;
 	}
 
@@ -425,6 +428,46 @@ void LEDStrip::handleTouch2() {
 
 
 }// end LEDStrip::handleTouch2
+//-----------------------------------------------------------------------------------------
+
+//-----------------------------------------------------------------------------------------
+// LEDStrip::handleAccel
+//
+
+void LEDStrip::handleAccel() {
+
+	accelerometer.update();
+
+	// range is 2g
+	// 255 / 2 = approx 127
+	// but 2g is very rare in a car
+	// driver probably wouldn't be worried about what's going on with LEDs 
+	// 											if they are experiencing 2gs
+	// common force is +-0.3 to +-0.5g
+	// which is approx 4 m/s^2
+	// 255 / 4 = 63
+
+	float ef = 1.0 + 0.1 * (float) encoderPosition;
+	Serial.print("ef: "); Serial.println(ef);
+
+	float xf = (accelerometer.x > 0) ? accelerometer.x : accelerometer.x * -1;
+	xf = xf * xf;
+	if (xf < 0.4) { xf = 0; }
+	int redNew = 255 - (int) (90.0 * ef * xf);
+	if (redNew < 0) redNew = 0;
+	Serial.print("redNew: "); Serial.print(redNew);
+
+	float yf = (accelerometer.y > 0) ? accelerometer.y : accelerometer.y * -1;
+	yf = yf * yf;
+	if (yf < 0.4) { yf = 0; }
+	int blueNew = 255 - (int) (90.0 * ef * yf);
+	if (blueNew < 0) blueNew = 0;
+	Serial.print("\tblueNew: "); Serial.println(blueNew);
+
+	writeColor(redNew, 0, blueNew);
+
+
+}// end LEDStrip::handleAccel
 //-----------------------------------------------------------------------------------------
 
 //-----------------------------------------------------------------------------------------

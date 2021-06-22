@@ -29,8 +29,6 @@ class TouchSensor : public Object{
 
 		Positions state = OFF;
 
-		virtual ~TouchSensor();
-
 	private:
 
 		CapacitiveSensor sensor;

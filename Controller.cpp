@@ -21,7 +21,7 @@ Controller::Controller() :
 	irrecv(RECEIVE_PIN),
 	ledStrip("LED Strip")
 {
-
+	Serial.println("controller constructor");
 }// end of Controller::Controller (constructor)
 //-----------------------------------------------------------------------------------------
 
@@ -33,8 +33,6 @@ Controller::Controller() :
 //
 
 void Controller::init(){
-
-	Serial.begin(9600);
 
 	setupIO();
 
@@ -165,6 +163,11 @@ void Controller::handleIR() {
 
 	case IR_TOUCH2:
 		ledStrip.setMode(TOUCH2_MODE);
+		break;
+
+	case IR_ACCEL:
+		ledStrip.setAndWriteColor(255, 255, 0);
+		ledStrip.setMode(ACCEL_MODE);
 		break;
 
 	default:

@@ -46,24 +46,25 @@ const unsigned long IR_SMOOTH2      = 0xFF42BD;
 const unsigned long IR_REACT		= 0xFF38C7;
 const unsigned long IR_TOUCH		= 0xFF5AA5;
 const unsigned long IR_TOUCH2		= 0xFF52AD;
+const unsigned long IR_ACCEL		= 0xFF9867;
 
 
 /*   ELEGOO REMOTE LAYOUT
- *  ╔════╦════╦════╗
- *      ON     WHITE    OFF
- *  ╠════╬════╬════╣
- *     RED      GRN     BLU
- *  ╠════╬════╬════╣
- *    BRIGHT           
- *  ╠════╬════╬════╣
- *
- *  ╠════╬════╬════╣
- *    FLASH   STROBE    FADE
- *  ╠════╬════╬════╣
- *    SMOOTH  REACT
- *  ╠════╬════╬════╣
- *
- *  ╚════╩════╩════╝
+ *  ╔══════════╦══════════╦══════════╗
+ *  ║   ON     ║	WHITE ║  OFF     ║
+ *  ╠══════════╬══════════╬══════════╣
+ *  ║  RED     ║   GRN    ║   BLU    ║
+ *  ╠══════════╬══════════╬══════════╣
+ *  ║ BRIGHT   ║          ║          ║
+ *  ╠══════════╬══════════╬══════════╣
+ *	║   	   ║  ACCEL   ║          ║
+ *  ╠══════════╬══════════╬══════════╣
+ *  ║  FLASH   ║  STROBE  ║ FADE     ║
+ *  ╠══════════╬══════════╬══════════╣
+ *  ║  SMOOTH  ║   REACT  ║ TOUCH    ║
+ *  ╠══════════╬══════════╬══════════╣
+ *	║  SMOOTH2 ║  STROBE2 ║  TOUCH2  ║
+ *  ╚══════════╩══════════╩══════════╝
  */
 
 //-----------------------------------------------------------------------------------------
