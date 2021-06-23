@@ -41,7 +41,6 @@ void LEDStrip::update() {
 	if(encoderPosition < 0) {encoder.write(0); encoderPosition = 0;}
 	if(encoderPosition > 40) {encoder.write(160); encoderPosition = 40;}
 	adjustedValue = encoderPosition*encoderPosition;
-	Serial.print("encoder pos: "); Serial.println(encoderPosition);
 
 	switch(mode) {
 		case NORMAL_MODE:
@@ -372,22 +371,17 @@ void LEDStrip::handleSmooth2() {
 
 void LEDStrip::handleReact() {
 
-	int soundValue = analogRead(SOUND_SENSOR);
-	int scaledSound = ((float)soundValue / 1024.0) * 255.0;
-	//if(soundValue > 100) Serial.println(soundValue);
+	uint16_t soundValue = analogRead(SOUND_SENSOR);
 	
-	int temp = ((float) encoderPosition / 40.0) * 150;
-	if(adjustedValue != temp) {
-		adjustedValue = temp;
-		Serial.println(adjustedValue);
-	}
+	uint16_t threshold = encoderPosition * 10;
 
-	if(scaledSound > adjustedValue) {
-		//Serial.println(scaledSound);
+	if(soundValue > threshold) {
 		writeColor();
+		delay(10);
 	} else {
 		writeColor(0, 0, 0);
 	}
+
 }// end LEDStrip::handleReact
 //-----------------------------------------------------------------------------------------
 
