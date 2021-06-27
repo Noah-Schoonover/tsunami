@@ -21,16 +21,24 @@ class Accelerometer : public Object{
 		Accelerometer(const char *pTag);
 
 		void update();
+		void updateAvg();
 
-		float x = 0;
-		float y = 0;
-		float z = 0;
+		int16_t x = 0;
+		int16_t y = 0;
+		int16_t z = 0;
+
+		int32_t xavg = 0;
+		int32_t yavg = 0;
 
 		int getRange() { return 2 << sensor.getRange(); }
 
 	private:
 
 		Adafruit_LIS3DH sensor;
+
+		static const uint8_t BUF_SIZE = 10;
+		int16_t xbuf[BUF_SIZE]{};
+		int16_t ybuf[BUF_SIZE]{};
 
 		Stopwatch stopwatch;
 

@@ -430,7 +430,7 @@ void LEDStrip::handleTouch2() {
 
 void LEDStrip::handleAccel() {
 
-	accelerometer.update();
+	accelerometer.updateAvg();
 
 	// range is 2g
 	// 255 / 2 = approx 127
@@ -441,25 +441,37 @@ void LEDStrip::handleAccel() {
 	// which is approx 4 m/s^2
 	// 255 / 4 = 63
 
-	float ef = 1.0 + 0.1 * (float) encoderPosition;
-	Serial.print("ef: "); Serial.println(ef);
+	uint16_t x = accelerometer.xavg >= 0 ? accelerometer.xavg : accelerometer.xavg * -1;
+	uint16_t y = accelerometer.yavg >= 0 ? accelerometer.yavg : accelerometer.yavg * -1;
 
-	float xf = (accelerometer.x > 0) ? accelerometer.x : accelerometer.x * -1;
-	xf = xf * xf;
-	if (xf < 0.4) { xf = 0; }
-	int redNew = 255 - (int) (90.0 * ef * xf);
-	if (redNew < 0) redNew = 0;
-	Serial.print("redNew: "); Serial.print(redNew);
+	uint16_t threshold = 1050 + encoderPosition * 20;
 
-	float yf = (accelerometer.y > 0) ? accelerometer.y : accelerometer.y * -1;
-	yf = yf * yf;
-	if (yf < 0.4) { yf = 0; }
-	int blueNew = 255 - (int) (90.0 * ef * yf);
-	if (blueNew < 0) blueNew = 0;
-	Serial.print("\tblueNew: "); Serial.println(blueNew);
+	uint8_t blueNew = 255;
+	uint8_t redNew = 255;
+
+	bool doDelay = false;
+
+	if (x > threshold) {
+		x = x - threshold;
+		x = (float) x / 2500.0 * 255.0;
+		if (x > 255) { x = 255; }
+		blueNew -= x;
+		doDelay = true;
+		Serial.print("x: "); Serial.println(x);
+	}
+
+	if (y > threshold + 400) {
+		y = y - threshold;
+		y = (float) y / 3000.0 * 255.0;
+		if (y > 255) { y = 255; }
+		redNew -= y;
+		doDelay = true;
+		Serial.print("y: "); Serial.println(y);
+	}
 
 	writeColor(redNew, 0, blueNew);
 
+	// if (doDelay) { delay(15); }
 
 }// end LEDStrip::handleAccel
 //-----------------------------------------------------------------------------------------

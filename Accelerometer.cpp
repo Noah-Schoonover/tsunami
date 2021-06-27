@@ -43,26 +43,59 @@ Accelerometer::Accelerometer(const char *pTag)
 
 void Accelerometer::update() {
 
-	if(stopwatch.checkDone()){
+	sensor.read();      // get X Y and Z data at once
 
-		sensors_event_t event;
-		sensor.getEvent(&event);
+	x = sensor.x;
+	y = sensor.y;
+	z = sensor.z;
 
-		x = event.acceleration.x;
-		y = event.acceleration.y;
-		z = event.acceleration.z;
-
-		/* Display the results (acceleration is measured in m/s^2) */
-		// Serial.print("\tX: "); Serial.print(x);
-		// Serial.print("\tY: "); Serial.print(y);
-		// Serial.print("\tZ: "); Serial.print(z);
-		// Serial.println(" m/s^2 "); Serial.println();
-
-		stopwatch.start(30);
-			
+	// Then print out the raw data
+	if (false) {
+		Serial.print("X: "); Serial.print(x);
+		Serial.print("\tY: "); Serial.print(y);
+		Serial.print("\tZ: "); Serial.println(z);
 	}
-
+			
 }// end Accelerometer::update
+//-----------------------------------------------------------------------------------------
+
+//-----------------------------------------------------------------------------------------
+// Accelerometer::updateAvg
+//
+//
+
+void Accelerometer::updateAvg() {
+
+	update();
+
+	memmove(xbuf + 1, xbuf, sizeof(int16_t) * (BUF_SIZE - 1));
+	xbuf[0] = x;
+	xavg = 0;
+	for (size_t i = 0; i < BUF_SIZE; i++) { xavg += xbuf[i]; }
+	xavg = xavg / BUF_SIZE;
+
+	// Serial.print("xavg: "); Serial.print(xavg); Serial.print("     xbuf: "); 
+	// for(size_t i = 0; i < BUF_SIZE; i++) {
+	// 	Serial.print(xbuf[i]); Serial.print("   ");
+	// }
+	// Serial.println();
+
+	/////////////////
+
+	memmove(ybuf + 1, ybuf, sizeof(int16_t) * (BUF_SIZE - 1));
+	ybuf[0] = y;
+	yavg = 0;
+	for (size_t i = 0; i < BUF_SIZE; i++) { yavg += ybuf[i]; }
+	yavg = yavg / BUF_SIZE;
+
+	// Serial.print("yavg: "); Serial.print(yavg); Serial.print("     ybuf: "); 
+	// for(size_t i = 0; i < BUF_SIZE; i++) {
+	// 	Serial.print(ybuf[i]); Serial.print("   ");
+	// }
+	// Serial.println();
+	
+			
+}// end Accelerometer::updateAvg
 //-----------------------------------------------------------------------------------------
 
 //end of class Accelerometer
