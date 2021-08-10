@@ -8,24 +8,23 @@
 
 enum Inputs{
 
-	RECEIVE_PIN = 2,
+	IR_RECEIVE_PIN = 15,
 	SOUND_SENSOR = A0,
-	POT_SENSOR = A1,
-	TOUCH_RECEIVE = 3,
+	TOUCH_RECEIVE = 7,
 
-	ENCODER_SW = 10,
-	ENCODER_DT = 11,
+	ENCODER_SW = A2,
+	ENCODER_DT = A3,
 	ENCODER_CLK = 12
 
 };
 
 enum Outputs {
 
-	RED_LED = 6,
-	GREEN_LED = 5,
+	RED_LED = 5,
+	GREEN_LED = 6,
 	BLUE_LED = 9,
 
-	TOUCH_TRANSMIT = 4,
+	TOUCH_TRANSMIT = 8,
     
 };
 

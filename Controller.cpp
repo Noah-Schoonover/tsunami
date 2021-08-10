@@ -18,10 +18,10 @@
 //
 
 Controller::Controller() :
-	irrecv(RECEIVE_PIN),
+	irrecv(IR_RECEIVE_PIN),
 	ledStrip("LED Strip")
 {
-	Serial.println("controller constructor");
+
 }// end of Controller::Controller (constructor)
 //-----------------------------------------------------------------------------------------
 
@@ -53,10 +53,10 @@ void Controller::process(){
 
 	if( retreiveIR() ) handleIR();
 
-	if(digitalRead(ENCODER_SW))
-		digitalWrite(LED_BUILTIN, HIGH);
-	else
-		digitalWrite(LED_BUILTIN, LOW);
+	// if(digitalRead(ENCODER_SW))
+	// 	digitalWrite(LED_BUILTIN, HIGH);
+	// else
+	// 	digitalWrite(LED_BUILTIN, LOW);
 
 	ledStrip.update();
 
@@ -200,7 +200,6 @@ void Controller::setupIO() {
 	pinMode(ENCODER_CLK, INPUT);
 
 	pinMode(SOUND_SENSOR, INPUT);
-	pinMode(POT_SENSOR, INPUT);
 
 }// end Controller::setupIO
 //-----------------------------------------------------------------------------------------

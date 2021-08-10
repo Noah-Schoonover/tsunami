@@ -36,6 +36,9 @@ void setup() {
 
 void loop(void) {
 
+  if( digitalRead(IR_RECEIVE_PIN) == HIGH) { digitalWrite(LED_BUILTIN, HIGH); }
+  else { digitalWrite(LED_BUILTIN, LOW); }
+
   controller->process();
 
 }// end of loop
