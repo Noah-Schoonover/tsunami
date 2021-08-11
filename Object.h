@@ -12,7 +12,7 @@ class Object{
 
 	public:
 
-		Object(const char *pType, const char *pTag);
+		Object(const char *pTag);
 
 		virtual void init();
 
@@ -21,8 +21,6 @@ class Object{
 		virtual ~Object();
 
 	protected:
-
-		const char *type;
 
 		const char *tag;
 

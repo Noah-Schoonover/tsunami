@@ -20,9 +20,8 @@ const char *tag;
 // Object::Object (constructor)
 //
 
-Object::Object(const char *pType, const char *pTag){
+Object::Object(const char *pTag){
 
-	type = pType;
 	tag = pTag;
 
 }// end of Object::Object (constructor)

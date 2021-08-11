@@ -16,21 +16,21 @@
 //
 
 Accelerometer::Accelerometer(const char *pTag) 
-:	Object("Accelerometer", pTag),
+:	Object(pTag),
 	sensor(), // empty constructor for I2C
-	stopwatch("Accelerometer Stopwatch")
+	stopwatch("AccSW")
 {
 
-	Serial.println("LIS3DH test!");
+	Serial.print("acc..");
 
 	if (! sensor.begin(0x18)) {   // change this to 0x19 for alternative i2c address
-		Serial.println("Couldn't start");
+		Serial.println("err");
 		while (1) yield();
 	}
-	Serial.println("LIS3DH found!");
+	Serial.println("found");
 
 	sensor.setRange(LIS3DH_RANGE_2_G);   // 2, 4, 8 or 16 G!
-	Serial.print("Range = "); Serial.print(2 << sensor.getRange());
+	Serial.print("R="); Serial.print(2 << sensor.getRange());
 	Serial.println("G");
 
 }// end of Accelerometer::Accelerometer (constructor)

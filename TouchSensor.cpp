@@ -16,9 +16,9 @@
 //
 
 TouchSensor::TouchSensor(const char *pTag, int pTransmit, int pReceive) :
-	Object("TouchSensor", pTag),
+	Object(pTag),
 	sensor(pTransmit, pReceive),
-	stopwatch("TouchSensor Stopwatch")
+	stopwatch("TouchSW")
 {
 
 	

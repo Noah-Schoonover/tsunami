@@ -20,7 +20,7 @@ Controller *controller;
 void setup() {
 
   Serial.begin(9600);
-  Serial.println("---\nSerial Initialized");
+  Serial.println("---\nSerial Init");
   controller = new Controller();
   controller->init();
 

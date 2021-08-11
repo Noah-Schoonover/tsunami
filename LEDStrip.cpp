@@ -16,11 +16,11 @@
 //
 
 LEDStrip::LEDStrip(const char *pTag) :
-		Object("LEDStrip", pTag),
-		stopwatch("Stopwatch"),
+		Object(pTag),
+		stopwatch("SW"),
 		encoder(ENCODER_DT, ENCODER_CLK),
-		touchSensor("touch sensor", TOUCH_TRANSMIT, TOUCH_RECEIVE),
-		accelerometer("accelerometer")
+		touchSensor("touch", TOUCH_TRANSMIT, TOUCH_RECEIVE),
+		accelerometer("acc")
 {
 
 	
@@ -37,10 +37,25 @@ LEDStrip::LEDStrip(const char *pTag) :
 
 void LEDStrip::update() {
 
+	int oldEncoderPos = encoderPosition;
 	encoderPosition = encoder.read() / 4;
-	if(encoderPosition < 0) {encoder.write(0); encoderPosition = 0;}
-	if(encoderPosition > 40) {encoder.write(160); encoderPosition = 40;}
-	adjustedValue = encoderPosition*encoderPosition;
+
+	if (encoderPosition != oldEncoderPos) {
+
+		if(encoderPosition < 0) {
+			encoder.write(0); encoderPosition = 0;
+			Serial.print("too low..");
+		}
+
+		if(encoderPosition > 40) {
+			encoder.write(160); encoderPosition = 40;
+			Serial.print("too high..");
+		}
+
+		adjustedValue = encoderPosition*encoderPosition;
+
+		Serial.print("enc: "); Serial.println(encoderPosition);
+	}
 
 	switch(mode) {
 		case NORMAL_MODE:
@@ -372,6 +387,8 @@ void LEDStrip::handleSmooth2() {
 void LEDStrip::handleReact() {
 
 	uint16_t soundValue = analogRead(SOUND_SENSOR);
+
+	Serial.println(soundValue);
 	
 	uint16_t threshold = encoderPosition * 10;
 
