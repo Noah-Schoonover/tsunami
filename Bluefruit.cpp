@@ -172,7 +172,24 @@ void handleControl(char* packetbuffer) {
     @brief  callback for RX data
 */
 /**************************************************************************/
-void bleUartRX(char data[], uint16_t len)
+void bleUartRxCallback(char data[], uint16_t len)
+{
+
+  if (len && data[0] != '!') {
+    handleMessage(data, len);
+
+    return;
+  }
+
+  handleControl(data);
+}
+
+/**************************************************************************/
+/*!
+    @brief  callback for connection established
+*/
+/**************************************************************************/
+void bleConnectedCallback(char data[], uint16_t len)
 {
   Serial.print( F("[BLE]" ) );
   Serial.write(data, len);
@@ -217,11 +234,13 @@ void setupBluefruit(Adafruit_BluefruitLE_SPI *ble)
   ble->info();
 
   ble->verbose(false);  // debug info is a little annoying after this point!
+  
+  ble->setBleUartRxCallback(bleUartRxCallback);
 
   /* Wait for connection */
-  while (! ble->isConnected()) {
-      delay(500);
-  }
+  // while (! ble->isConnected()) {
+  //     delay(500);
+  // }
 
   Serial.println(F("******************************"));
 
@@ -239,6 +258,5 @@ void setupBluefruit(Adafruit_BluefruitLE_SPI *ble)
 
   Serial.println(F("******************************"));
 
-  ble->setBleUartRxCallback(bleUartRX);
 
 }

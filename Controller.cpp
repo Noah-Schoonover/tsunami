@@ -56,7 +56,9 @@ void Controller::init(){
 void Controller::process(){
 
 	//processBluefruit(&ble);
-	ble.update(200);
+	if (ble.isConnected()) {
+		ble.update(200);
+	}
 
 	if( retreiveIR() ) handleIR();
 
