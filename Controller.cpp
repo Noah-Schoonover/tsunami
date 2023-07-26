@@ -6,6 +6,8 @@
 
 #include "Controller.h"
 
+Adafruit_BluefruitLE_SPI ble(BLUEFRUIT_SPI_CS, BLUEFRUIT_SPI_IRQ, BLUEFRUIT_SPI_RST);
+
 //-----------------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------------
 // class Controller
@@ -34,6 +36,8 @@ Controller::Controller() :
 
 void Controller::init(){
 
+	setupBluefruit(&ble);
+
 	setupIO();
 
 	debug();
@@ -51,13 +55,16 @@ void Controller::init(){
 
 void Controller::process(){
 
+	//processBluefruit(&ble);
+	ble.update(200);
+
 	if( retreiveIR() ) handleIR();
 
 	if(digitalRead(ENCODER_SW)) {
 		digitalWrite(LED_BUILTIN, HIGH);
 	} else {
 		digitalWrite(LED_BUILTIN, LOW);
-		Serial.println("enc sw");
+		Serial.println(F("enc sw"));
 	}
 
 	ledStrip.update();
@@ -212,7 +219,7 @@ void Controller::setupIO() {
 
 void Controller::debug() {
 
-  Serial.println("SysChk...\n");
+  Serial.println(F("SysChk...\n"));
   
 }// end debug
 //-----------------------------------------------------------------------------------------

@@ -44,12 +44,12 @@ void LEDStrip::update() {
 
 		if(encoderPosition < 0) {
 			encoder.write(0); encoderPosition = 0;
-			Serial.print("too low..");
+			Serial.print(F("too low.."));
 		}
 
 		if(encoderPosition > 40) {
 			encoder.write(160); encoderPosition = 40;
-			Serial.print("too high..");
+			Serial.print(F("too high.."));
 		}
 
 		adjustedValue = encoderPosition*encoderPosition;
@@ -470,14 +470,14 @@ void LEDStrip::handleAccel() {
 
 	if (x > threshold) {
 		x = x - threshold;
-		x = (float) x / 2500.0 * 255.0;
+		x = (float) x / 3000.0 * 255.0;
 		if (x > 255) { x = 255; }
 		blueNew -= x;
 		doDelay = true;
 		Serial.print("x: "); Serial.println(x);
 	}
 
-	if (y > threshold + 400) {
+	if (y > threshold) {
 		y = y - threshold;
 		y = (float) y / 3000.0 * 255.0;
 		if (y > 255) { y = 255; }

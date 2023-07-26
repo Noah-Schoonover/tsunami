@@ -21,17 +21,17 @@ Accelerometer::Accelerometer(const char *pTag)
 	stopwatch("AccSW")
 {
 
-	Serial.print("acc..");
+	Serial.print(F("acc.."));
 
 	if (! sensor.begin(0x18)) {   // change this to 0x19 for alternative i2c address
-		Serial.println("err");
+		Serial.println(F("err"));
 		while (1) yield();
 	}
-	Serial.println("found");
+	Serial.println(F("found"));
 
 	sensor.setRange(LIS3DH_RANGE_2_G);   // 2, 4, 8 or 16 G!
-	Serial.print("R="); Serial.print(2 << sensor.getRange());
-	Serial.println("G");
+	Serial.print(F("R=")); Serial.print(2 << sensor.getRange());
+	Serial.println(F("G"));
 
 }// end of Accelerometer::Accelerometer (constructor)
 //-----------------------------------------------------------------------------------------
@@ -51,9 +51,9 @@ void Accelerometer::update() {
 
 	// Then print out the raw data
 	if (false) {
-		Serial.print("X: "); Serial.print(x);
-		Serial.print("\tY: "); Serial.print(y);
-		Serial.print("\tZ: "); Serial.println(z);
+		Serial.print(F("X: ")); Serial.print(x);
+		Serial.print(F("\tY: ")); Serial.print(y);
+		Serial.print(F("\tZ: ")); Serial.println(z);
 	}
 			
 }// end Accelerometer::update

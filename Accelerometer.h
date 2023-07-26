@@ -36,7 +36,7 @@ class Accelerometer : public Object{
 
 		Adafruit_LIS3DH sensor;
 
-		static const uint8_t BUF_SIZE = 10;
+		static const uint8_t BUF_SIZE = 100;
 		int16_t xbuf[BUF_SIZE]{};
 		int16_t ybuf[BUF_SIZE]{};
 

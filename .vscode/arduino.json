@@ -1,7 +1,7 @@
 {
     "configuration": "cpu=16MHzatmega328",
     "board": "arduino:avr:pro",
-    "sketch": "rgbRemote.ino",
+    "sketch": "tsunami.ino",
     "output": "../build/rgbRemote",
     "buildPreferences": [
         [
@@ -9,6 +9,6 @@
             "-Wno-unused-function -Wno-unused-parameter"
         ]
     ],
-    "port": "COM14",
+    "port": "COM6",
     "programmer": "arduino:arduinoisp"
 }
