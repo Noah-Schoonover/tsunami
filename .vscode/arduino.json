@@ -6,5 +6,6 @@
             "-Wno-unused-function -Wno-unused-parameter"
         ]
     ],
-    "port": "COM6"
+    "port": "COM6",
+    "sketch": "tsunami.ino"
 }

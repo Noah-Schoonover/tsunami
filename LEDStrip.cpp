@@ -29,6 +29,104 @@ LEDStrip::LEDStrip(const char *pTag) :
 //-----------------------------------------------------------------------------------------
 
 //-----------------------------------------------------------------------------------------
+// LEDStrip::on
+//
+
+void LEDStrip::on() {
+
+	writeColor();
+	setBrightness(1.0);
+	setMode(NORMAL_MODE);
+
+}// end LEDStrip::on
+//-----------------------------------------------------------------------------------------
+
+//-----------------------------------------------------------------------------------------
+// LEDStrip::off
+//
+
+void LEDStrip::off() {
+
+	writeColor(0, 0, 0);
+	setMode(NORMAL_MODE);
+
+}// end LEDStrip::off
+//-----------------------------------------------------------------------------------------
+
+//-----------------------------------------------------------------------------------------
+// LEDStrip::handleIR
+//
+
+void LEDStrip::handleIR(unsigned long value) {
+
+	switch(value) {
+
+	case IR_ON: on();
+		break;
+
+	case IR_OFF: off();
+		break;
+
+	case IR_WHITE: setAndWriteColor(255, 255, 255);
+		break;
+
+	case IR_CYCLE_RED:
+		cycleColor(RED);
+		writeColor();
+		break;
+
+	case IR_CYCLE_GREEN:
+		cycleColor(GREEN);
+		writeColor();
+		break;
+
+	case IR_CYCLE_BLUE:
+		cycleColor(BLUE);
+		writeColor();
+		break;
+
+	case IR_BRIGHTNESS: cycleBrightness();
+		break;
+
+	case IR_FLASH: setMode(FLASH_MODE);
+		break;
+
+	case IR_STROBE: setMode(STROBE_MODE);
+		break;
+
+	case IR_STROBE2: setMode(STROBE2_MODE);
+		break;
+
+	case IR_FADE: setMode(FADE_MODE);
+		break;
+ 
+	case IR_SMOOTH: setMode(SMOOTH_MODE);
+		break;
+
+	case IR_SMOOTH2: setMode(SMOOTH2_MODE);
+		break;
+
+	case IR_REACT: setMode(REACT_MODE);
+		break;
+
+	case IR_TOUCH: setMode(TOUCH_MODE);
+		break;
+
+	case IR_TOUCH2: setMode(TOUCH2_MODE);
+		break;
+
+	case IR_ACCEL: 
+		setAndWriteColor(255, 255, 0); 
+		setMode(ACCEL_MODE);
+		break;
+
+	default: break;
+	}
+
+}// end of LEDStrip::handleIR
+//-----------------------------------------------------------------------------------------
+
+//-----------------------------------------------------------------------------------------
 // LEDStrip::update
 //
 // sets the PWM outputs to the specified values
@@ -189,7 +287,7 @@ void LEDStrip::setMode(Modes pMode) {
 //-----------------------------------------------------------------------------------------
 // LEDStrip::cycleColor
 //
-// sets the red, green, and blue variables and calls writeColor
+// sets the red, green, or blue variables
 //
 
 unsigned char LEDStrip::cycleColor(Colors pColor) {
@@ -386,15 +484,18 @@ void LEDStrip::handleSmooth2() {
 
 void LEDStrip::handleReact() {
 
-	uint16_t soundValue = analogRead(SOUND_SENSOR);
+	if (!stopwatch.checkDone()) return;
 
-	Serial.println(soundValue);
+	uint16_t soundValue = analogRead(SOUND_SENSOR);
 	
 	uint16_t threshold = encoderPosition * 10;
 
 	if(soundValue > threshold) {
+		Serial.print(soundValue);
+		Serial.print(" > ");
+		Serial.println(threshold);
 		writeColor();
-		delay(10);
+		stopwatch.start(10);
 	} else {
 		writeColor(0, 0, 0);
 	}

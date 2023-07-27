@@ -1,5 +1,5 @@
-#ifndef _BLEUFRUIT_H
-#define _BLEUFRUIT_H
+#ifndef _BLUE_FRUIT_H
+#define _BLUE_FRUIT_H
 
 #include <string.h>
 #include <Arduino.h>
@@ -7,7 +7,7 @@
 #include "Adafruit_BLE.h"
 #include "Adafruit_BluefruitLE_SPI.h"
 
-#define BUFSIZE                        128   // Size of the read buffer for incoming data
+#define BLE_BUFSIZE                    64   // Size of the read buffer for incoming data
 #define VERBOSE_MODE                   true  // If set to 'true' enables debug output
 #define BLE_READPACKET_TIMEOUT         10   // Timeout in ms waiting to read a response
 
@@ -47,5 +47,9 @@ FACTORYRESET_ENABLE       Perform a factory reset when running this sketch
     void setupBluefruit(Adafruit_BluefruitLE_SPI*);
     void processBluefruit(Adafruit_BluefruitLE_SPI*);
 
+    float parsefloat(char* buffer);
 
-#endif // _BLEUFRUIT_H
+    extern char bleData[];
+
+
+#endif // _BLUE_FRUIT_H

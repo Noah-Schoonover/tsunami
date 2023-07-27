@@ -36,12 +36,11 @@ Controller::Controller() :
 
 void Controller::init(){
 
-	setupBluefruit(&ble);
-
 	setupIO();
 
 	debug();
 
+	setupBluefruit(&ble);
 	irrecv.enableIRIn(); // Start the receiver
 
 }// end of Controller::init
@@ -58,6 +57,16 @@ void Controller::process(){
 	//processBluefruit(&ble);
 	if (ble.isConnected()) {
 		ble.update(200);
+		if (bleData[0] != 0) {
+			// received a message
+			//Serial.println(bleData);
+			if (bleData[0] == '!') {
+				handleBleControl(bleData);
+			} else {
+				handleBleMessage(bleData);
+			}
+			bleData[0] = 0;
+		}
 	}
 
 	if( retreiveIR() ) handleIR();
@@ -92,6 +101,127 @@ int Controller::retreiveIR() {
 }// end Controller::retreiveIR
 //-----------------------------------------------------------------------------------------
 
+/**************************************************************************/
+/*!
+    @brief  for messages not beginning with '!'
+*/
+/**************************************************************************/
+void Controller::handleBleMessage(char* data) {
+  Serial.println((char*) data);
+  if (!strcmp((char*) data, "on")) {
+    Serial.println(F("LEDS ON"));
+	ledStrip.on();
+	return;
+  }
+  if (!strcmp((char*) data, "off")) {
+    Serial.println(F("LEDS OFF"));
+	ledStrip.off();
+	return;
+  }
+  if (!strcmp((char*) data, "touch")) {
+    Serial.println(F("ENABLING TOUCH"));
+	ledStrip.setMode(TOUCH_MODE);
+	return;
+  }
+  if (!strcmp((char*) data, "sound")) {
+    Serial.println(F("ENABLING SOUND"));
+	ledStrip.setMode(REACT_MODE);
+	return;
+  }
+}
+
+/**************************************************************************/
+/*!
+    @brief  for messages beginning with '!'
+*/
+/**************************************************************************/
+void Controller::handleBleControl(char* packetbuffer) {
+  // Color
+  if (packetbuffer[1] == 'C') {
+    uint8_t red = packetbuffer[2];
+    uint8_t green = packetbuffer[3];
+    uint8_t blue = packetbuffer[4];
+    Serial.print(F("RGB #: ")); 
+    Serial.print(F("  red:"));
+    Serial.print(red);
+    Serial.print(F(" green:"));
+    Serial.print(green);
+    Serial.print(F(" blue:"));
+    Serial.println(blue);
+	ledStrip.setAndWriteColor(red, green, blue);
+    return;
+  }
+
+  // Buttons
+  if (packetbuffer[1] == 'B') {
+    uint8_t buttnum = packetbuffer[2] - '0';
+    boolean pressed = packetbuffer[3] - '0';
+    Serial.print(F("Button ")); Serial.print(buttnum);
+    if (pressed) {
+      Serial.println(F(" pressed"));
+    } else {
+      Serial.println(F(" released"));
+    }
+    return;
+  }
+
+  // Accelerometer
+  if (packetbuffer[1] == 'A') {
+    float x, y, z;
+    x = parsefloat(packetbuffer+2);
+    y = parsefloat(packetbuffer+6);
+    z = parsefloat(packetbuffer+10);
+    Serial.print(F("Accel\t"));
+    Serial.print(x); Serial.print('\t');
+    Serial.print(y); Serial.print('\t');
+    Serial.print(z); Serial.println();
+    return;
+  }
+
+  // Magnetometer
+  if (packetbuffer[1] == 'M') {
+    float x, y, z;
+    x = parsefloat(packetbuffer+2);
+    y = parsefloat(packetbuffer+6);
+    z = parsefloat(packetbuffer+10);
+    Serial.print(F("Mag\t"));
+    Serial.print(x); Serial.print('\t');
+    Serial.print(y); Serial.print('\t');
+    Serial.print(z); Serial.println();
+    return;
+  }
+
+  // Gyroscope
+  if (packetbuffer[1] == 'G') {
+    float x, y, z;
+    x = parsefloat(packetbuffer+2);
+    y = parsefloat(packetbuffer+6);
+    z = parsefloat(packetbuffer+10);
+    Serial.print(F("Gyro\t"));
+    Serial.print(x); Serial.print('\t');
+    Serial.print(y); Serial.print('\t');
+    Serial.print(z); Serial.println();
+    return;
+  }
+
+  // Quaternions
+  if (packetbuffer[1] == 'Q') {
+    float x, y, z, w;
+    x = parsefloat(packetbuffer+2);
+    y = parsefloat(packetbuffer+6);
+    z = parsefloat(packetbuffer+10);
+    w = parsefloat(packetbuffer+14);
+    Serial.print(F("Quat\t"));
+    Serial.print(x); Serial.print('\t');
+    Serial.print(y); Serial.print('\t');
+    Serial.print(z); Serial.print('\t');
+    Serial.print(w); Serial.println();
+    return;
+  }
+
+  Serial.println(F("Unrecognized Command"));
+}
+
 //-----------------------------------------------------------------------------------------
 // Controller::handleIR
 //
@@ -103,88 +233,7 @@ void Controller::handleIR() {
 	//if(remoteInput.value == 0x0) return;
 	Serial.println(remoteInput.value, HEX);
 
-	switch(remoteInput.value) {
-
-	case IR_ON:
-		ledStrip.writeColor();
-		ledStrip.setBrightness(1.0);
-		ledStrip.setMode(NORMAL_MODE);
-		break;
-
-	case IR_OFF:
-		ledStrip.writeColor(0, 0, 0);
-		ledStrip.setMode(NORMAL_MODE);
-		break;
-
-	case IR_WHITE:
-		ledStrip.setAndWriteColor(255, 255, 255);
-		//ledStrip.setMode(NORMAL_MODE);
-		break;
-
-	case IR_CYCLE_RED:
-		ledStrip.cycleColor(RED);
-		ledStrip.writeColor();
-		break;
-
-	case IR_CYCLE_GREEN:
-		ledStrip.cycleColor(GREEN);
-		ledStrip.writeColor();
-		break;
-
-	case IR_CYCLE_BLUE:
-		ledStrip.cycleColor(BLUE);
-		ledStrip.writeColor();
-		break;
-
-	case IR_BRIGHTNESS:
-		ledStrip.cycleBrightness();
-		break;
-
-	case IR_FLASH:
-		ledStrip.setMode(FLASH_MODE);
-		break;
-
-	case IR_STROBE:
-		ledStrip.setMode(STROBE_MODE);
-		break;
-
-	case IR_STROBE2:
-		ledStrip.setMode(STROBE2_MODE);
-		break;
-
-	case IR_FADE:
-		ledStrip.setMode(FADE_MODE);
-		break;
- 
-	case IR_SMOOTH:
-		ledStrip.setMode(SMOOTH_MODE);
-		break;
-
-	case IR_SMOOTH2:
-		ledStrip.setMode(SMOOTH2_MODE);
-		break;
-
-	case IR_REACT:
-		ledStrip.setMode(REACT_MODE);
-		break;
-
-	case IR_TOUCH:
-		ledStrip.setMode(TOUCH_MODE);
-		break;
-
-	case IR_TOUCH2:
-		ledStrip.setMode(TOUCH2_MODE);
-		break;
-
-	case IR_ACCEL:
-		ledStrip.setAndWriteColor(255, 255, 0);
-		ledStrip.setMode(ACCEL_MODE);
-		break;
-
-	default:
-		break;
-
-	}
+	ledStrip.handleIR(remoteInput.value);
 
 	remoteInput.value = 0x0;	// reset remoteInput in order to only catch new signals
 	irrecv.resume(); // Receive the next value

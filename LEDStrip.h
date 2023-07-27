@@ -51,6 +51,9 @@ class LEDStrip : public Object{
 
 		LEDStrip(const char *pTag);
 
+		void handleIR(unsigned long value);
+		void on();
+		void off();
 		void update();
 
 		void setMode(Modes pMode);

@@ -43,6 +43,8 @@ class Controller{
 
 		int retreiveIR();
 		void handleIR();
+		void handleBleMessage(char* data);
+		void handleBleControl(char* packetbuffer);
 
 };// end of class Controller  
 //-----------------------------------------------------------------------------------------
