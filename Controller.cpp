@@ -57,11 +57,21 @@ void Controller::process(){
 		ble.update(200);
 		if (bleData[0] != 0) {
 			// received a message
-			if (bleData[0] == '!') {
-				handleBleControl(bleData);
-			} else {
-				handleBleMessage(bleData);
-			}
+      switch (bleData[0])
+      {
+      case '!':
+        handleBleColor(bleData);
+        break;
+      case '@':
+        handleBleCommand(bleData);
+        break;
+      case '?':
+        handleBleSliderValue(bleData);
+      
+      default:
+        break;
+      }
+			
 			bleData[0] = 0;
 		}
 	}
@@ -73,7 +83,7 @@ void Controller::process(){
 	} else {
 		digitalWrite(LED_BUILTIN, LOW);
     ledStrip.on();
-    delay(20); // debounce
+    delay(500); // debounce
 		Serial.println(F("enc sw"));
 	}
 
@@ -102,58 +112,44 @@ int Controller::retreiveIR() {
 
 /**************************************************************************/
 /*!
-    @brief  for messages not beginning with '!'
+    @brief  for messages with '@'
 */
 /**************************************************************************/
-void Controller::handleBleMessage(char* data) {
+void Controller::handleBleCommand(char* data) {
   Serial.println((char*) data);
+  Serial.println("handleBleCommand");
 
-  // check for ? to see if it's a sensitivity value
-  // if (data[0] == '?') {
-  //   Serial.println("implement sensitivity change");
-  //   return;
-  // }
-
-  if (!strcmp((char*) data, "on")) {
-    Serial.println(F("LEDS ON"));
-	ledStrip.on();
-	return;
+  switch (data[1]) 
+  {
+  case BLE_COMMAND_ON:
+    ledStrip.on();
+    break;
+	case BLE_COMMAND_OFF:
+    ledStrip.off();
+    break;
+	case BLE_COMMAND_SOUND:
+    ledStrip.setMode(REACT_MODE);
+    break;
+	case BLE_COMMAND_TOUCH:
+    ledStrip.setMode(TOUCH_MODE);
+    break;
+	case BLE_COMMAND_FADE:
+    ledStrip.setMode(FADE_MODE);
+    break;
+	case BLE_COMMAND_STROBE:
+    ledStrip.setMode(STROBE_MODE);
+    break;
+	case BLE_COMMAND_SMOOTH:
+    ledStrip.setMode(SMOOTH_MODE);
+    break;
+	case BLE_COMMAND_ACCEL:
+    ledStrip.setMode(ACCEL_MODE);
+    break;
+  
+  default:
+    Serial.println(F("Unknown BLE Command!"));
+    break;
   }
-  if (!strcmp((char*) data, "off")) {
-    Serial.println(F("LEDS OFF"));
-	ledStrip.off();
-	return;
-  }
-  if (!strcmp((char*) data, "touch")) {
-    Serial.println(F("ENABLING TOUCH"));
-	ledStrip.setMode(TOUCH_MODE);
-	return;
-  }
-  if (!strcmp((char*) data, "sound")) {
-    Serial.println(F("ENABLING SOUND"));
-	ledStrip.setMode(REACT_MODE);
-	return;
-  }
-  // if (!strcmp((char*) data, "fade")) {
-  //   Serial.println(F("ENABLING FADE"));
-	// ledStrip.setMode(FADE_MODE);
-	// return;
-  // }
-  // if (!strcmp((char*) data, "smooth")) {
-  //   Serial.println(F("ENABLING SMOOTH"));
-	// ledStrip.setMode(SMOOTH_MODE);
-	// return;
-  // }
-  // if (!strcmp((char*) data, "accel")) {
-  //   Serial.println(F("ENABLING ACCEL"));
-	// ledStrip.setMode(ACCEL_MODE);
-	// return;
-  // }
-  // if (!strcmp((char*) data, "strobe")) {
-  //   Serial.println(F("ENABLING STROBE"));
-	// ledStrip.setMode(STROBE_MODE);
-	// return;
-  // }
 }
 
 /**************************************************************************/
@@ -161,7 +157,7 @@ void Controller::handleBleMessage(char* data) {
     @brief  for messages beginning with '!'
 */
 /**************************************************************************/
-void Controller::handleBleControl(char* packetbuffer) {
+void Controller::handleBleColor(char* packetbuffer) {
   // Color
   if (packetbuffer[1] == 'C') {
     uint8_t red = packetbuffer[2];
@@ -246,6 +242,22 @@ void Controller::handleBleControl(char* packetbuffer) {
   }
 
   Serial.println(F("Unrecognized Command"));
+}
+
+//-----------------------------------------------------------------------------------------
+// Controller::handleBleSliderValue
+//
+//
+void Controller::handleBleSliderValue(char* data) {
+  Serial.println((char*) data);
+
+  // get the slider value as an integer
+  int value = atoi(data + 1); // skip the prefix
+
+  Serial.print("slider: ");
+  Serial.println(value);
+
+  ledStrip.setSliderValue(value);
 }
 
 //-----------------------------------------------------------------------------------------

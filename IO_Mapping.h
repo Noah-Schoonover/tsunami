@@ -48,6 +48,19 @@ enum Outputs {
     
 };
 
+enum BLE_COMMANDS {
+
+	BLE_COMMAND_ON = 'O',
+	BLE_COMMAND_OFF = 'o',
+	BLE_COMMAND_SOUND = 'R',
+	BLE_COMMAND_TOUCH = 'T',
+	BLE_COMMAND_FADE = 'F',
+	BLE_COMMAND_STROBE = 's',
+	BLE_COMMAND_SMOOTH = 'S',
+	BLE_COMMAND_ACCEL = 'A'
+    
+};
+
 // ELEGOO Infrared Remote
 const unsigned long IR_ON           = 0xFFA25D;
 const unsigned long IR_OFF          = 0xFFE21D;

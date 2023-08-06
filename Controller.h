@@ -34,8 +34,9 @@ class Controller {
 
 		int retreiveIR();
 		void handleIR();
-		void handleBleMessage(char* data);
-		void handleBleControl(char* packetbuffer);
+		void handleBleCommand(char* data);
+		void handleBleSliderValue(char* data);
+		void handleBleColor(char* packetbuffer);
 
 };// end of class Controller  
 //-----------------------------------------------------------------------------------------

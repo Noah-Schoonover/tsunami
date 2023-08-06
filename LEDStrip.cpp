@@ -126,6 +126,19 @@ void LEDStrip::handleIR(unsigned long value) {
 //-----------------------------------------------------------------------------------------
 
 //-----------------------------------------------------------------------------------------
+// LEDStrip::setSliderValue
+//
+
+void LEDStrip::setSliderValue(int value) {
+	if (value < 0 || value > 40) {
+		return;
+	}
+	encoder.write(value * 4);
+	encoderPosition = value;
+	adjustedValue = value * value;
+}
+
+//-----------------------------------------------------------------------------------------
 // LEDStrip::update
 //
 // sets the PWM outputs to the specified values

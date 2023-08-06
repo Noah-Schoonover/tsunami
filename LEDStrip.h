@@ -55,6 +55,8 @@ class LEDStrip {
 		void off();
 		void update();
 
+		void setSliderValue(int value);
+
 		void setMode(Modes pMode);
 
 		void writeColor(int pRed, int pGreen, int pBlue);
