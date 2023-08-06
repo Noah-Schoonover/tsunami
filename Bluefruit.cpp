@@ -9,7 +9,7 @@
 #define PACKET_LOCATION_LEN             (15)
 
 //    READ_BLE_BUFSIZE            Size of the read buffer for incoming packets
-#define READ_BLE_BUFSIZE                    (20)
+#define READ_BLE_BUFSIZE                    (32)
 
 char bleData[BLE_BUFSIZE+1]{};
 

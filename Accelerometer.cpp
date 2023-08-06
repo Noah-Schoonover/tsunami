@@ -15,10 +15,9 @@
 // Accelerometer::Accelerometer (constructor)
 //
 
-Accelerometer::Accelerometer(const char *pTag) 
-:	Object(pTag),
+Accelerometer::Accelerometer() :
 	sensor(), // empty constructor for I2C
-	stopwatch("AccSW")
+	stopwatch()
 {
 
 	Serial.print(F("acc.."));

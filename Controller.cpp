@@ -38,8 +38,6 @@ void Controller::init(){
 
 	setupIO();
 
-	debug();
-
 	setupBluefruit(&ble);
 	irrecv.enableIRIn(); // Start the receiver
 
@@ -59,7 +57,6 @@ void Controller::process(){
 		ble.update(200);
 		if (bleData[0] != 0) {
 			// received a message
-			//Serial.println(bleData);
 			if (bleData[0] == '!') {
 				handleBleControl(bleData);
 			} else {
@@ -75,6 +72,8 @@ void Controller::process(){
 		digitalWrite(LED_BUILTIN, HIGH);
 	} else {
 		digitalWrite(LED_BUILTIN, LOW);
+    ledStrip.on();
+    delay(20); // debounce
 		Serial.println(F("enc sw"));
 	}
 
@@ -108,6 +107,13 @@ int Controller::retreiveIR() {
 /**************************************************************************/
 void Controller::handleBleMessage(char* data) {
   Serial.println((char*) data);
+
+  // check for ? to see if it's a sensitivity value
+  // if (data[0] == '?') {
+  //   Serial.println("implement sensitivity change");
+  //   return;
+  // }
+
   if (!strcmp((char*) data, "on")) {
     Serial.println(F("LEDS ON"));
 	ledStrip.on();
@@ -128,6 +134,26 @@ void Controller::handleBleMessage(char* data) {
 	ledStrip.setMode(REACT_MODE);
 	return;
   }
+  // if (!strcmp((char*) data, "fade")) {
+  //   Serial.println(F("ENABLING FADE"));
+	// ledStrip.setMode(FADE_MODE);
+	// return;
+  // }
+  // if (!strcmp((char*) data, "smooth")) {
+  //   Serial.println(F("ENABLING SMOOTH"));
+	// ledStrip.setMode(SMOOTH_MODE);
+	// return;
+  // }
+  // if (!strcmp((char*) data, "accel")) {
+  //   Serial.println(F("ENABLING ACCEL"));
+	// ledStrip.setMode(ACCEL_MODE);
+	// return;
+  // }
+  // if (!strcmp((char*) data, "strobe")) {
+  //   Serial.println(F("ENABLING STROBE"));
+	// ledStrip.setMode(STROBE_MODE);
+	// return;
+  // }
 }
 
 /**************************************************************************/
@@ -262,26 +288,6 @@ void Controller::setupIO() {
 	pinMode(SOUND_SENSOR, INPUT);
 
 }// end Controller::setupIO
-//-----------------------------------------------------------------------------------------
-
-//-----------------------------------------------------------------------------------------
-// debug
-//
-
-void Controller::debug() {
-
-  Serial.println(F("SysChk...\n"));
-  
-}// end debug
-//-----------------------------------------------------------------------------------------
-
-//-----------------------------------------------------------------------------------------
-// Controller::Controller (destructor)
-//
-
-Controller::~Controller(){
-
-}// end of Controller::Controller (destructor)
 //-----------------------------------------------------------------------------------------
 
 //end of class Controller

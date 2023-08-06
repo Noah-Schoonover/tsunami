@@ -2,7 +2,6 @@
 #ifndef _ACCELEROMETER_H
 #define _ACCELEROMETER_H
 
-#include "Object.h"
 #include "IO_Mapping.h"
 #include "Stopwatch.h"
 #include <Arduino.h>
@@ -14,11 +13,11 @@
 // @brief  
 //
 
-class Accelerometer : public Object{
+class Accelerometer {
 
 	public:
 
-		Accelerometer(const char *pTag);
+		Accelerometer();
 
 		void update();
 		void updateAvg();

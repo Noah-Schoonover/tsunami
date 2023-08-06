@@ -4,19 +4,17 @@
 
 #include <arduino.h>
 
-#include "Object.h"
-
 //-----------------------------------------------------------------------------------------
 // class Stopwatch
 //
 // @brief  A class for timing
 //
 
-class Stopwatch : public Object{
+class Stopwatch {
 
 	public:
 
-		Stopwatch(const char *pTag);
+		Stopwatch();
 
 		void start(uint32_t pElapsedTimeTarget);
 

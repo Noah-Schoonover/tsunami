@@ -3,11 +3,9 @@
 
 #include <string.h>
 #include <Arduino.h>
-#include <SPI.h>
-#include "Adafruit_BLE.h"
 #include "Adafruit_BluefruitLE_SPI.h"
 
-#define BLE_BUFSIZE                    64   // Size of the read buffer for incoming data
+#define BLE_BUFSIZE                    32   // Size of the read buffer for incoming data
 #define VERBOSE_MODE                   true  // If set to 'true' enables debug output
 #define BLE_READPACKET_TIMEOUT         10   // Timeout in ms waiting to read a response
 

@@ -2,7 +2,6 @@
 #ifndef _LEDSTRIP_H
 #define _LEDSTRIP_H
 
-#include "Object.h"
 #include "IO_Mapping.h"
 #include "Stopwatch.h"
 #include "TouchSensor.h"
@@ -45,7 +44,7 @@ enum ModeSpeeds {
 // @brief  
 //
 
-class LEDStrip : public Object{
+class LEDStrip {
 
 	public:
 

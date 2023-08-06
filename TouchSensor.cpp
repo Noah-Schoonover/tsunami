@@ -15,10 +15,9 @@
 // TouchSensor::TouchSensor (constructor)
 //
 
-TouchSensor::TouchSensor(const char *pTag, int pTransmit, int pReceive) :
-	Object(pTag),
+TouchSensor::TouchSensor(int pTransmit, int pReceive) :
 	sensor(pTransmit, pReceive),
-	stopwatch("TouchSW")
+	stopwatch()
 {
 
 	

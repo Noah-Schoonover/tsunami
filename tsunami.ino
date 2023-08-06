@@ -1,11 +1,7 @@
 //-----------------------------------------------------------------------------------------
 // rgbRemote.ino
 //
-// For all Skoonie projects, the ino file does NOTHING except create the Controller object
-// and start it up.
-//
-// See notes at the top of the Controller.cpp file for details pertaining to each project.
-//
+
 
 #include "Controller.h"
 

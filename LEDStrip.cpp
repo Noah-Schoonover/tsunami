@@ -16,11 +16,10 @@
 //
 
 LEDStrip::LEDStrip(const char *pTag) :
-		Object(pTag),
-		stopwatch("SW"),
+		stopwatch(),
 		encoder(ENCODER_DT, ENCODER_CLK),
-		touchSensor("touch", TOUCH_TRANSMIT, TOUCH_RECEIVE),
-		accelerometer("acc")
+		touchSensor(TOUCH_TRANSMIT, TOUCH_RECEIVE),
+		accelerometer()
 {
 
 	

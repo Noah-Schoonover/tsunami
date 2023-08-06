@@ -2,7 +2,6 @@
 #ifndef _TOUCHSENSOR_H
 #define _TOUCHSENSOR_H
 
-#include "Object.h"
 #include "IO_Mapping.h"
 #include "Stopwatch.h"
 #include "CapacitiveSensor.h"
@@ -19,11 +18,11 @@ enum Positions {
 // @brief  
 //
 
-class TouchSensor : public Object{
+class TouchSensor {
 
 	public:
 
-		TouchSensor(const char *pTag, int pTransmit, int pReceive);
+		TouchSensor(int pTransmit, int pReceive);
 
 		void update(int threshold);
 

@@ -26,8 +26,7 @@
 // Stopwatch::Stopwatch (constructor)
 //
 
-Stopwatch::Stopwatch(const char *pTag) :
-	Object(pTag)
+Stopwatch::Stopwatch()
 {
 
 }// end of Stopwatch::Stopwatch (constructor)
